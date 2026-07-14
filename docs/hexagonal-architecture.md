@@ -21,7 +21,7 @@ It defines what the domain needs without saying how it will be done.
 Notice there's no mention of:
 
 HTTP
-XIVAPI
+POKEMONAPI
 JSON
 Spring
 

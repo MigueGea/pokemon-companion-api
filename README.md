@@ -1,4 +1,4 @@
-# FFXIV Companion API
+# POKEMON Companion API
 
 A modern REST API for Final Fantasy XIV built with Java and Spring Boot.
 
