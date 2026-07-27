@@ -1,4 +1,4 @@
-# Pokemon Companion API
+# POKEMON Companion API
 
 A modern REST API for Pokemon built with Java and Spring Boot.
 

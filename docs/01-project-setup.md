@@ -11,7 +11,7 @@ Each feature is organized as an independent module.
 Current project structure:
 
 ```text
-com.miguegea.ffxivcompanion
+com.miguegea.pokemon.companion
 
 ├── common/
 ├── config/

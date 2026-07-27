@@ -1,3 +1,8 @@
 spring:
   application:
-    name: ffxiv-companion-api
+    name: pokemon-companion-api
+
+#URLS
+
+pokeapi:
+    base-url: https://pokeapi.co/api/v2/pokemon
