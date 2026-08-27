@@ -1,5 +1,6 @@
 package com.miguegea.pokemoncompanion.pokemon.infrastructure.adapter.out.pokemonapi;
 
+import com.miguegea.pokemoncompanion.pokemon.domain.exception.PokemonNotFoundException;
 import com.miguegea.pokemoncompanion.pokemon.domain.model.Pokemon;
 import com.miguegea.pokemoncompanion.pokemon.domain.model.PokemonSearchResult;
 import com.miguegea.pokemoncompanion.pokemon.domain.port.out.PokemonSearchPort;
@@ -21,7 +22,13 @@ public class PokeApiPokemonSearchAdapter implements PokemonSearchPort {
 
     @Override
     public PokemonSearchResult search(String pokemonName) {
-        PokemonApiResponse  response = restClient.get().uri("/{name}",pokemonName).retrieve().body(PokemonApiResponse.class);
+        PokemonApiResponse  response = restClient.get().uri("/{name}",pokemonName).retrieve()
+            // If PokeAPI returns 404, convert it to our application exception.
+            .onStatus(status-> status.value() == 404,
+                (request, clientResponse) -> {
+                    throw new PokemonNotFoundException(pokemonName);
+                })
+            .body(PokemonApiResponse.class);
         Pokemon pokemon = pokemonApiMapper.toDomain(response);
 
         return new PokemonSearchResult(pokemon,1,1,1);
