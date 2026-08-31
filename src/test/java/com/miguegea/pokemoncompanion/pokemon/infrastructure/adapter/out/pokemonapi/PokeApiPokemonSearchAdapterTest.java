@@ -1,6 +1,9 @@
 package com.miguegea.pokemoncompanion.pokemon.infrastructure.adapter.out.pokemonapi;
 
 import com.miguegea.pokemoncompanion.pokemon.domain.exception.PokemonNotFoundException;
+import com.miguegea.pokemoncompanion.pokemon.domain.model.Pokemon;
+import com.miguegea.pokemoncompanion.pokemon.domain.model.PokemonSearchResult;
+import com.miguegea.pokemoncompanion.pokemon.infrastructure.adapter.out.pokemonapi.dto.PokemonApiResponse;
 import com.miguegea.pokemoncompanion.pokemon.infrastructure.adapter.out.pokemonapi.mapper.PokemonApiMapper;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -13,8 +16,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestClient;
 
 import java.io.IOException;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class PokeApiPokemonSearchAdapterTest {
@@ -47,6 +54,33 @@ public class PokeApiPokemonSearchAdapterTest {
         mockWebServer.enqueue(new MockResponse().setResponseCode(404));
 
         assertThrows(PokemonNotFoundException.class, () -> adapter.search("pikachua"));
+    }
+
+    @Test
+    void shouldReturnPokemonSearchResultWhenApiReturns200() throws Exception {
+
+        mockWebServer.enqueue(new MockResponse()
+            .setResponseCode(200)
+            .setHeader("Content-Type", "application/json")
+            .setBody("""
+            {
+                "id": 25,
+                "name": "pikachu",
+                "types": []
+            }
+            """));
+
+        Pokemon pokemon = new Pokemon(25, "pikachu", List.of());
+
+        when(pokemonApiMapper.toDomain(any(PokemonApiResponse.class)))
+            .thenReturn(pokemon);
+
+        PokemonSearchResult result = adapter.search("pikachu");
+
+        assertNotNull(result);
+        assertSame(pokemon, result.pokemon());
+
+        verify(pokemonApiMapper).toDomain(any(PokemonApiResponse.class));
     }
 }
 
