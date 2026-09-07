@@ -1,11 +1,11 @@
 name: CI
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
 
 jobs:
     build:
@@ -23,3 +23,6 @@ jobs:
 
             -   name: Build and test
                 run: ./mvnw clean verify
+
+            -   name: Build Docker image
+                run: docker build -t pokemon-companion-api .
