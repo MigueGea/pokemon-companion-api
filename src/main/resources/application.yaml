@@ -5,4 +5,4 @@ spring:
 #URLS
 
 pokeapi:
-    base-url: https://pokeapi.co/api/v2/pokemon
+    base-url: ${POKEMON_API_URL:https://pokeapi.co/api/v2/pokemon}
