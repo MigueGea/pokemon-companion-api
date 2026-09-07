@@ -3,9 +3,12 @@ on:
     push:
         branches:
             - main
+        tags:
+            - 'v*'
     pull_request:
         branches:
             - main
+
 
 jobs:
     build:
@@ -25,4 +28,6 @@ jobs:
                 run: ./mvnw clean verify
 
             -   name: Build Docker image
-                run: docker build -t pokemon-companion-api .
+                run: |
+                    VERSION=${GITHUB_REF_NAME#v}
+                    docker build -t pokemon-companion-api:$VERSION .
