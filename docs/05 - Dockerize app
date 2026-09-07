@@ -1,0 +1,14 @@
+Docker workflow added.
+We added the Dockerfile, dockerignore.
+using this command :
+docker run --name pokemon-companion-api -p 8081:8080 -e POKEMON_API_URL=https://pokeapi.co/api/v2/pokemon pokemon-companion-api:1.0.0
+
+We can create and run the container.
+
+with git tag v1.0.0
+git push origin v1.0.0
+We can create a new release in GitHub and add the docker image to the release.
+Github Actions will create a new docker image with that version.
+
+So instead of using the local pom version we can use that tag version.
+
